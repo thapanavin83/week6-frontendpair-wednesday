@@ -10,9 +10,10 @@ const Login = ({ setIsAuthenticated }) => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
 
     try {
-      const res = await fetch("/api/auth/login", {
+      const res = await fetch("/api/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -36,10 +37,7 @@ const Login = ({ setIsAuthenticated }) => {
 
       localStorage.setItem("user", JSON.stringify(user));
 
-      console.log("success");
-
       setIsAuthenticated(true);
-
       navigate("/");
     } catch (err) {
       setError(err.message);
@@ -50,11 +48,10 @@ const Login = ({ setIsAuthenticated }) => {
     <div className="login">
       <h2>Login</h2>
 
-      {error && <div>{error}</div>}
+      {error && <div className="error">{error}</div>}
 
       <form onSubmit={handleFormSubmit}>
         <label>Email:</label>
-
         <input
           type="email"
           required
@@ -63,7 +60,6 @@ const Login = ({ setIsAuthenticated }) => {
         />
 
         <label>Password:</label>
-
         <input
           type="password"
           required

@@ -44,12 +44,18 @@ const EditBookPage = () => {
     fetchBook();
   }, [id]);
 
-  // 2. PUT request function
+  // 2. PUT request function with JWT authorization
   const updateBook = async (updatedBook) => {
     try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const token = user ? user.token : null;
+
       const res = await fetch(`/api/books/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(updatedBook),
       });
 

@@ -3,7 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
   const navigate = useNavigate();
 
-  const user = JSON.parse(localStorage.getItem("user"));
+  // Safely parse localStorage data to prevent runtime errors if JSON is invalid
+  const getUserEmail = () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      return user?.email || "";
+    } catch {
+      return "";
+    }
+  };
 
   const handleClick = () => {
     localStorage.removeItem("user");
@@ -13,7 +21,9 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
 
   return (
     <nav className="navbar">
-      <h1>Book Library</h1>
+      <Link to="/">
+        <h1>Book Library</h1>
+      </Link>
 
       <div className="links">
         <Link to="/">Home</Link>
@@ -21,9 +31,7 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
         {isAuthenticated ? (
           <>
             <Link to="/add-book">Add Book</Link>
-
-            {user && <span>{user.email}</span>}
-
+            <span>{getUserEmail()}</span>
             <button onClick={handleClick}>Log out</button>
           </>
         ) : (

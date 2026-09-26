@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Home from "./pages/HomePage";
 import AddBookPage from "./pages/AddBookPage";
@@ -11,9 +11,10 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 
 const App = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    !!localStorage.getItem("user")
-  );
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    return user && user.token ? true : false;
+  });
 
   return (
     <div className="App">
@@ -26,25 +27,45 @@ const App = () => {
         <div className="content">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/add-book" element={<AddBookPage />} />
-            <Route path="/books/:id" element={<BookPage />} />
+
+            <Route
+              path="/books/:id"
+              element={<BookPage isAuthenticated={isAuthenticated} />}
+            />
+
+            <Route
+              path="/add-book"
+              element={
+                isAuthenticated ? <AddBookPage /> : <Navigate to="/signup" />
+              }
+            />
 
             <Route
               path="/edit-book/:id"
-              element={<EditBookPage />}
+              element={
+                isAuthenticated ? <EditBookPage /> : <Navigate to="/signup" />
+              }
             />
 
             <Route
               path="/signup"
               element={
-                <Signup setIsAuthenticated={setIsAuthenticated} />
+                isAuthenticated ? (
+                  <Navigate to="/" />
+                ) : (
+                  <Signup setIsAuthenticated={setIsAuthenticated} />
+                )
               }
             />
 
             <Route
               path="/login"
               element={
-                <Login setIsAuthenticated={setIsAuthenticated} />
+                isAuthenticated ? (
+                  <Navigate to="/" />
+                ) : (
+                  <Login setIsAuthenticated={setIsAuthenticated} />
+                )
               }
             />
 
