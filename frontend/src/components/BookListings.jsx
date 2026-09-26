@@ -1,12 +1,13 @@
 import BookListing from "./BookListing";
 
-const BookListings = () => {
+const BookListings = ({ books }) => {
   return (
     <div className="book-list">
-      <BookListing />
+      {books.map((book) => (
+        <BookListing key={book.id} book={book} />
+      ))}
     </div>
   );
 };
 
 export default BookListings;
-
