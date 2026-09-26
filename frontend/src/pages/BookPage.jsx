@@ -44,7 +44,7 @@ const BookPage = () => {
     }
   };
 
-  const onDeleteClick = (bookId) => {
+  const onDeleteClick = async (bookId) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this book?"
     );
@@ -53,7 +53,7 @@ const BookPage = () => {
       return;
     }
 
-    deleteBook(bookId);
+    await deleteBook(bookId);
     navigate("/");
   };
 
@@ -98,11 +98,18 @@ const BookPage = () => {
 
       <br />
 
+      <button onClick={() => navigate(`/edit-book/${book._id}`)}>
+        Edit
+      </button>
+
+      {" "}
+
       <button onClick={() => onDeleteClick(book._id)}>
         Delete
       </button>
 
-      {" "}
+      <br />
+      <br />
 
       <Link to="/">Back to Home</Link>
     </div>
