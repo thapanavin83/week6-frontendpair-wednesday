@@ -26,13 +26,13 @@ const App = () => {
         <div className="content">
           <Routes>
             <Route path="/" element={<Home />} />
-
             <Route path="/add-book" element={<AddBookPage />} />
-
             <Route path="/books/:id" element={<BookPage />} />
-<<<<<<< HEAD
-            <Route path="/edit-book/:id" element={<EditBookPage />} />
-=======
+
+            <Route
+              path="/edit-book/:id"
+              element={<EditBookPage />}
+            />
 
             <Route
               path="/signup"
@@ -48,7 +48,6 @@ const App = () => {
               }
             />
 
->>>>>>> d4a9cae (feat(auth): add signup and login)
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </div>
